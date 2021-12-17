@@ -1,26 +1,24 @@
-const { Sequelize } = require('sequelize');
+vconst { Sequelize } = require('sequelize');
 const sequelize  = require('../config/database')
 
-const Todo = sequelize.define('NewTodo',{
+const todos = sequelize.define('Todos',{
     id:{
         type: Sequelize.INTEGER,
-        allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },
     task:{
         type: Sequelize.STRING
     },
+},{
+    timestamps: false
 })
-
-Todo.sync({ alter: true }).then(()=>console.log("table created"))
-            .catch(err=>console.log(err))
 
 
 async function getAllTodo(){
     try{
-        const jane = await Todo.findAll();
-    return jane
+        const data = await todos.findAll();
+    return data
     }catch(err){
         console.log(err)
     }
@@ -28,7 +26,7 @@ async function getAllTodo(){
 
 async function TodoById({ id,task }){
     try{
-        await Todo.update({ task: task }, {
+        await todos.update({ task: task }, {
             where: {
               id: id
             }
@@ -40,7 +38,7 @@ async function TodoById({ id,task }){
 
 async function deleteTodo(id){
     try{
-        await Todo.destroy({
+        await todos.destroy({
             where: {
               id: id
             }
@@ -53,15 +51,15 @@ async function deleteTodo(id){
 
 async function  createNewTodo(task){
     try{
-        const jane = await Todo.create({ task: task });
-    return jane
+        const data = await todos.create({ task: task });
+    return data
     }catch(err){
         console.log(err)
     }
 }
 
 module.exports = {
-    Todo,
+    todos,
     getAllTodo,
     createNewTodo,
     TodoById,
